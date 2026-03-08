@@ -7,32 +7,49 @@
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
+    <div class="bg-glow bg-glow--one"></div>
+    <div class="bg-glow bg-glow--two"></div>
+
     <main class="container">
-      <h1>🧠 Brainstorm Arena (4 agentów)</h1>
-      <p class="subtitle">
-        Wpisz pomysł i uruchom debatę między modelami: {% for agent in agents %}<code>{{ agent.name }}</code>{% if not loop.last %}, {% endif %}{% endfor %}.
-      </p>
+      <header class="hero card">
+        <p class="eyebrow">Multi-agent strategy lab</p>
+        <h1>🧠 Brainstorm Arena</h1>
+        <p class="subtitle">
+          Jeden pomysł → 4 modele → dyskusja i krytyka → 1 dopracowany plan działania.
+        </p>
+        <div class="agent-pills">
+          {% for agent in agents %}
+          <span class="pill">{{ agent.name }}</span>
+          {% endfor %}
+        </div>
+      </header>
 
-      <form id="brainstorm-form">
-        <label for="idea">Pomysł</label>
-        <textarea id="idea" name="idea" rows="5" placeholder="Np. SaaS dla lokalnych restauracji..." required></textarea>
+      <section class="card">
+        <h2>1) Wpisz pomysł</h2>
+        <form id="brainstorm-form">
+          <label for="idea">Pomysł</label>
+          <textarea id="idea" name="idea" rows="5" placeholder="Np. SaaS do automatyzacji kampanii dla małych e-commerce..." required></textarea>
 
-        <label for="context">Kontekst (opcjonalnie)</label>
-        <textarea id="context" name="context" rows="4" placeholder="Budżet, grupa docelowa, terminy, ograniczenia..."></textarea>
+          <label for="context">Kontekst (opcjonalnie)</label>
+          <textarea id="context" name="context" rows="4" placeholder="Budżet, zasoby zespołu, rynek docelowy, ograniczenia czasowe..."></textarea>
 
-        <button type="submit">Uruchom panel ekspertów</button>
-      </form>
+          <div class="actions">
+            <button id="submit-btn" type="submit">Uruchom debatę ekspertów</button>
+            <p class="hint">Średni czas odpowiedzi: 1–3 minuty.</p>
+          </div>
+        </form>
+      </section>
 
-      <section id="status" class="status"></section>
+      <section id="status" class="status card">Czekam na Twój pomysł.</section>
 
       <section id="results" class="hidden">
-        <h2>Runda 1: wstępne propozycje</h2>
+        <h2>2) Runda 1 — niezależne propozycje</h2>
         <div id="initial" class="grid"></div>
 
-        <h2>Runda 2: krytyka + ulepszenie</h2>
+        <h2>3) Runda 2 — krytyka i ulepszenia</h2>
         <div id="debate" class="grid"></div>
 
-        <h2>Plan finalny (synteza)</h2>
+        <h2>4) Finalna synteza</h2>
         <article id="final" class="card final"></article>
       </section>
     </main>

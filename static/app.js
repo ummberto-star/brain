@@ -1,16 +1,36 @@
 const form = document.getElementById("brainstorm-form");
+const submitBtn = document.getElementById("submit-btn");
 const statusEl = document.getElementById("status");
 const resultsEl = document.getElementById("results");
 const initialEl = document.getElementById("initial");
 const debateEl = document.getElementById("debate");
 const finalEl = document.getElementById("final");
 
+function setStatus(message, variant = "idle") {
+  statusEl.textContent = message;
+  statusEl.classList.remove("status--running", "status--error");
+  if (variant === "running") {
+    statusEl.classList.add("status--running");
+  }
+  if (variant === "error") {
+    statusEl.classList.add("status--error");
+  }
+}
+
 function renderCards(target, items) {
   target.innerHTML = "";
   items.forEach((item) => {
     const article = document.createElement("article");
-    article.className = "card";
-    article.textContent = `${item.agent} (${item.model})\n\n${item.response}`;
+    article.className = "card result-card";
+
+    const heading = document.createElement("h3");
+    heading.textContent = `${item.agent} (${item.model})`;
+
+    const content = document.createElement("div");
+    content.textContent = item.response;
+
+    article.appendChild(heading);
+    article.appendChild(content);
     target.appendChild(article);
   });
 }
@@ -20,7 +40,8 @@ form.addEventListener("submit", async (event) => {
   const idea = document.getElementById("idea").value.trim();
   const context = document.getElementById("context").value.trim();
 
-  statusEl.textContent = "Trwa burza mózgów... To może potrwać 1-3 minuty.";
+  submitBtn.disabled = true;
+  setStatus("Trwa burza mózgów... To może potrwać 1–3 minuty.", "running");
   resultsEl.classList.add("hidden");
 
   try {
@@ -40,8 +61,10 @@ form.addEventListener("submit", async (event) => {
     finalEl.textContent = data.final_plan;
 
     resultsEl.classList.remove("hidden");
-    statusEl.textContent = "Gotowe ✅";
+    setStatus("Gotowe ✅ Plan został wygenerowany.");
   } catch (error) {
-    statusEl.textContent = `Błąd: ${error.message}`;
+    setStatus(`Błąd: ${error.message}`, "error");
+  } finally {
+    submitBtn.disabled = false;
   }
 });
