@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brainstorm Arena</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>🧠 Brainstorm Arena (4 agentów)</h1>
+      <p class="subtitle">
+        Wpisz pomysł i uruchom debatę między modelami: {% for agent in agents %}<code>{{ agent.name }}</code>{% if not loop.last %}, {% endif %}{% endfor %}.
+      </p>
+
+      <form id="brainstorm-form">
+        <label for="idea">Pomysł</label>
+        <textarea id="idea" name="idea" rows="5" placeholder="Np. SaaS dla lokalnych restauracji..." required></textarea>
+
+        <label for="context">Kontekst (opcjonalnie)</label>
+        <textarea id="context" name="context" rows="4" placeholder="Budżet, grupa docelowa, terminy, ograniczenia..."></textarea>
+
+        <button type="submit">Uruchom panel ekspertów</button>
+      </form>
+
+      <section id="status" class="status"></section>
+
+      <section id="results" class="hidden">
+        <h2>Runda 1: wstępne propozycje</h2>
+        <div id="initial" class="grid"></div>
+
+        <h2>Runda 2: krytyka + ulepszenie</h2>
+        <div id="debate" class="grid"></div>
+
+        <h2>Plan finalny (synteza)</h2>
+        <article id="final" class="card final"></article>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
